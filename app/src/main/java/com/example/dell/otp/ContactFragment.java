@@ -79,7 +79,7 @@ return rootView;
         protected Void doInBackground(Void... arg0) {
             HttpHandler sh = new HttpHandler();
             // Making a request to url and getting response
-            String url = "https://api.androidhive.info/contacts/";
+            String url = "https://demo5337015.mockable.io/contact";
             String jsonStr = sh.makeServiceCall(url);
 
             Log.e(TAG, "Response from url: " + jsonStr);

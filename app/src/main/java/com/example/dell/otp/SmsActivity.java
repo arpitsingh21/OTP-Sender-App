@@ -146,8 +146,7 @@ mTo.setText(number);
                     progressDialog.dismiss();
                     Toast.makeText(SmsActivity.this, "Otp Sent", Toast.LENGTH_SHORT).show();
 
-                    Intent i=new Intent(SmsActivity.this,MainActivity.class);
-                    startActivity(i);
+
 
                 }
 
