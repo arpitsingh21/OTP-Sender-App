@@ -3,6 +3,9 @@ package com.example.dell.otp;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.Environment;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -17,6 +20,8 @@ import com.chilkatsoft.CkJsonObject;
 import com.chilkatsoft.CkRest;
 import com.chilkatsoft.chilkat;
 
+import org.json.JSONArray;
+
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.FormBody;
@@ -24,11 +29,16 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+
+import java.io.BufferedOutputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Random;
@@ -90,6 +100,20 @@ mTo.setText(number);
                 contact.put("mobile",number);
                 contact.put("time",h);
                 SentFragment.contactList.add(contact);
+Collections.reverse(SentFragment.contactList);
+
+                try {
+                    FileOutputStream fos = new FileOutputStream(Environment.getExternalStorageDirectory()+"/hello.txt");
+                    ObjectOutputStream oos = new ObjectOutputStream(fos);
+                    oos.writeObject(SentFragment.contactList);
+                    oos.close();
+                } catch(Exception e) {
+                    e.printStackTrace();
+                }
+
+
+
+
 
                 //Toast.makeText(SmsActivity.this, ""+contactList, Toast.LENGTH_SHORT).show();
 
@@ -131,21 +155,15 @@ mTo.setText(number);
                     }
 
 
-/*
-                    Log.i(TAG, json.emit());
-
-                    //  Now get some individual pieces of information:
-                    Log.i(TAG, "sid: " + json.stringOf("sid"));
-                    Log.i(TAG, "body: " + json.stringOf("body"));
-                    Log.i(TAG, "media: " + json.stringOf("subresource_uris.media"));
-                Log.i(TAG, "Success.");
-*/
 
                 else if(rest.get_ResponseStatusCode()== 201){
                         Log.i(TAG, "Otp Sent");
                     progressDialog.dismiss();
                     Toast.makeText(SmsActivity.this, "Otp Sent", Toast.LENGTH_SHORT).show();
-
+                    Intent i=new Intent(SmsActivity.this,MainActivity.class);
+                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(i);
+                    finish();
 
 
                 }
@@ -164,4 +182,7 @@ mTo.setText(number);
 
 
     }
+
+
+
 }
